@@ -17,19 +17,13 @@ public class CSVReaderMatch {
         {
             System.out.println(e);
         }
-
     }
-
     public Scanner getS() {
         return s;
     }
-
     public void setS() {
         loadFile();
-
-
     }
-
     public void update()
     {
         while(s.hasNext())

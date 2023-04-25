@@ -11,6 +11,9 @@ public class Demo {
         CSVReaderMatch match = new CSVReaderMatch();
         match.loadFile();
         match.update();
-        match.printArrayList();
+//        match.printArrayList();
+        deliveries.loadFile();
+        deliveries.update();
+        deliveries.printArrayList();
     }
 }

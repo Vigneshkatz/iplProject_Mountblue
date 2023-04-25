@@ -13,34 +13,27 @@ public class CSVReaderDeliveries {
         {
             System.out.println(e);
         }
-
     }
-
     public Scanner getS() {
         return s;
     }
-
     public void setS() {
         loadFile();
-
-
     }
-
     public void update()
     {
         while(s.hasNext())
         {
-            String[] arr = s.next().toString().split(",");
+            String[] arr = s.nextLine().split(",");
             listOfDel.add(arr);
         }
     }
     public void printArrayList(){
+
         for(String[] i:this.listOfDel)
         {
-                for(String j :i) {
-                    System.out.print(j+" ");
-                }
-                System.out.println("=====================================");
+            System.out.println(Arrays.toString(i));
+            System.out.println("=====================================");
 
         }
     }
