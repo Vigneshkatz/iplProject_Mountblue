@@ -1,16 +1,16 @@
 package javaCode;
-
-import java.util.Collections;
+import java.text.*;
+import java.lang.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Demo {
     public static void main(String[] args)
     {
         CSVReaderDeliveries deliveries = new CSVReaderDeliveries();
         CSVReaderMatch match = new CSVReaderMatch();
-        deliveries.loadFile();;
-        deliveries.print();
         match.loadFile();
-        match.print();
-
+        match.update();
+        match.printArrayList();
     }
 }
