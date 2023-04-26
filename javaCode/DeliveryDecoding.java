@@ -4,7 +4,10 @@ import java.util.*;
 
 public class DeliveryDecoding {
 
-    HashMap<String, String> map = new HashMap<>();
+    private HashMap<String, String> map = new HashMap<>();
+    public HashMap<String, String> getMap() {
+        return map;
+    }
 
     public DeliveryDecoding(String[] arr)
     {

@@ -8,8 +8,9 @@ import java.util.*;
 public class CSVReaderMatch {
 
     private Scanner s;
-    HashMap<Integer,HashMap<String,String>> mapOfMatch = new HashMap<>();
-    public void loadFile(){
+    private HashMap<Integer,HashMap<String,String>> mapOfMatch = new HashMap<>();
+    public CSVReaderMatch(){
+//        incase file not found
         try {
             this.s = new Scanner(new File("/home/katziio/Desktop/iplProject/matches.csv"));
 
@@ -17,13 +18,14 @@ public class CSVReaderMatch {
         {
             System.out.println(e);
         }
+        update();
     }
-    public Scanner getS() {
-        return s;
+
+    public HashMap<Integer, HashMap<String, String>> getMapOfMatch() {
+        return mapOfMatch;
     }
-    public void setS() {
-        loadFile();
-    }
+
+    //       to update the file using update function
     public void update()
     {
         int count = 1;
@@ -34,6 +36,7 @@ public class CSVReaderMatch {
             mapOfMatch.put(count++,md.getMap());
         }
     }
+//    to check the date using printArrayList function
     public void printArrayList(){
 
         for(Integer key :mapOfMatch.keySet())

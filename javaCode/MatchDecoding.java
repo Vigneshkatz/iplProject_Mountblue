@@ -6,14 +6,12 @@ import java.util.*;
 
 public class MatchDecoding {
      private HashMap<String, String> map = new HashMap<>();
-     
+
      public HashMap<String, String> getMap() {
           return map;
      }
 
-     public void setMap(HashMap<String, String> map) {
-          this.map = map;
-     }
+
 
      public  MatchDecoding(String[] arr)
      {

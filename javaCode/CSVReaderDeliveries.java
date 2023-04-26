@@ -5,8 +5,8 @@ import java.util.*;
 public class CSVReaderDeliveries {
     private Scanner s;
 
-    HashMap<Integer,HashMap<String,String>> mapOfDeliveries = new HashMap<>();
-    public void loadFile(){
+    private HashMap<Integer,HashMap<String,String>> mapOfDeliveries = new HashMap<>();
+    public CSVReaderDeliveries(){
         try {
             this.s = new Scanner(new File("/home/katziio/Desktop/iplProject/deliveries.csv"));
 
@@ -14,23 +14,25 @@ public class CSVReaderDeliveries {
         {
             System.out.println(e);
         }
+        update();
     }
-    public Scanner getS() {
-        return s;
+
+    public HashMap<Integer, HashMap<String, String>> getMapOfDeliveries() {
+        return mapOfDeliveries;
     }
-    public void setS() {
-        loadFile();
-    }
+
+    //    to update the map
     public void update()
     {
         int count = 1;
         while(s.hasNext())
         {
             String[] arr = s.nextLine().split(",");
-            MatchDecoding md = new MatchDecoding(arr);
+            DeliveryDecoding md = new DeliveryDecoding(arr);
             mapOfDeliveries.put(count++,md.getMap());
         }
     }
+//    to check the date loaded or not
     public void printArrayList(){
 
         for(Integer key :mapOfDeliveries.keySet())
