@@ -78,10 +78,12 @@ public class Solution {
                 yearOfMatches.put(2017,yearOfMatches.getOrDefault(2017,0) + 1);
             }
         }
-        System.out.println(yearOfMatches.entrySet());
-//        for(char c:s.toCharArray()){
-//            yearOfMatches.put(c,yearOfMatches.getOrDefault(c,0) + 1);
-//        }
+        System.out.println(yearOfMatches.keySet());
+        for(int year: yearOfMatches.keySet())
+        {
+            System.out.printf("In %d : %d Matches Had played",year,yearOfMatches.get(year));
+            System.out.println();
+        }
 
     }
 
@@ -102,7 +104,20 @@ public class Solution {
 //        }
     }
     private static void numberOfMatchesWonOfTeamsInIPL(HashMap<Integer, HashMap<String, String>> mapOfMatch) {
-
+        /*
+        *
+        HashMap<String,Integer> map = new HashMap<>();
+        map.put("Chennai_Super_Kings",0);
+        map.put("Mumbai_Indians",0);
+        map.put("Royal_Challengers_Bangalore",0);
+        map.put("Delhi_Daredevils",0);
+        map.put("Sunrisers_Hyderabad",0);
+        map.put("Deccan_Chargers",0);
+        map.put("Gujarat_Lions",0);
+        map.put("Rising_Pune_Supergiant",0);
+        map.put("Kings_XI_Punjab",0);
+        map.put("Kolkata_Knight_Riders",0);
+        map.put("Rajasthan_Royals",0);*/
         int Chennai_Super_Kings=0;
         int Mumbai_Indians=0;
         int Royal_Challengers_Bangalore=0;
