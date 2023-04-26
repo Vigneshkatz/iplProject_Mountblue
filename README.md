@@ -7,4 +7,3 @@ Code a Java program that will transform the raw csv data into a data structure i
 3.For the year 2016 get the extra runs conceded per team.
 4.For the year 2015 get the top economical bowlers.
 5.Create your own scenario.
-using fetch bro
