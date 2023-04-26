@@ -8,7 +8,7 @@ import java.util.*;
 public class CSVReaderMatch {
 
     private Scanner s;
-    ArrayList<String[]> listOfMatch = new ArrayList<>();
+    HashMap<Integer,HashMap<String,String>> mapOfMatch = new HashMap<>();
     public void loadFile(){
         try {
             this.s = new Scanner(new File("/home/katziio/Desktop/iplProject/matches.csv"));
@@ -26,18 +26,21 @@ public class CSVReaderMatch {
     }
     public void update()
     {
+        int count = 1;
         while(s.hasNext())
         {
             String[] arr = s.nextLine().split(",");
-            listOfMatch.add(arr);
+//            System.out.println(arr.length);
+            MatchDecoding md = new MatchDecoding(arr);
+            mapOfMatch.put(count++,md.getMap());
         }
     }
     public void printArrayList(){
 
-        for(String[] i:this.listOfMatch)
+        for(Integer key :mapOfMatch.keySet())
         {
-            System.out.println(Arrays.toString(i));
-            System.out.println("=====================================");
+            System.out.print(key+" ");
+            System.out.println(mapOfMatch.get(key));
 
         }
     }
