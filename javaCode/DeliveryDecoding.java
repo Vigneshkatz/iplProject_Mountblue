@@ -3,12 +3,10 @@ package javaCode;
 import java.util.*;
 
 public class DeliveryDecoding {
-
     private HashMap<String, String> map = new HashMap<>();
     public HashMap<String, String> getMap() {
         return map;
     }
-
     public DeliveryDecoding(String[] arr)
     {
         map.put("matchId",arr[0]);
@@ -42,7 +40,6 @@ public class DeliveryDecoding {
                 }
             }
             else{
-
                 map.put("player_dismissed", null);
                 map.put("dismissal_kind", null);
             }
@@ -50,9 +47,6 @@ public class DeliveryDecoding {
             map.put("player_dismissed", null);
             map.put("dismissal_kind", null);
             map.put("fielder", null);
-
         }
-
     }
-
 }

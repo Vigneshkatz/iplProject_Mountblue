@@ -11,11 +11,8 @@ public class MatchDecoding {
           return map;
      }
 
-
-
      public  MatchDecoding(String[] arr)
      {
-
           map.put("id",arr[0]);
           map.put("season",arr[1]);
           map.put("city",arr[2]);
@@ -30,6 +27,7 @@ public class MatchDecoding {
           map.put("winByRun",arr[11]);
           map.put("winByWicket",arr[12]);
           map.put("playerOfTheMatch",arr[13]);
+//          found some case are null inorder to eliminate
           if(arr.length >= 15) {
                map.put("venue",arr[14]);
                if(arr.length >= 16) {
@@ -43,10 +41,8 @@ public class MatchDecoding {
 
                          }
                     }else{
-
                          map.put("umpire2", null);
                          map.put("umpire3", null);
-
                     }
                }else{
                     map.put("umpire1", null);
@@ -61,7 +57,4 @@ public class MatchDecoding {
                map.put("umpire3", null);
           }
      }
-
-
-
 }
