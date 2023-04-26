@@ -30,7 +30,6 @@ public class CSVReaderMatch {
         while(s.hasNext())
         {
             String[] arr = s.nextLine().split(",");
-//            System.out.println(arr.length);
             MatchDecoding md = new MatchDecoding(arr);
             mapOfMatch.put(count++,md.getMap());
         }

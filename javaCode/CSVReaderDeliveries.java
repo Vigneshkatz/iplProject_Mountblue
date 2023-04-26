@@ -4,7 +4,8 @@ import java.util.*;
 
 public class CSVReaderDeliveries {
     private Scanner s;
-    ArrayList<String[]> listOfDel = new ArrayList<>();
+
+    HashMap<Integer,HashMap<String,String>> mapOfDeliveries = new HashMap<>();
     public void loadFile(){
         try {
             this.s = new Scanner(new File("/home/katziio/Desktop/iplProject/deliveries.csv"));
@@ -22,18 +23,20 @@ public class CSVReaderDeliveries {
     }
     public void update()
     {
+        int count = 1;
         while(s.hasNext())
         {
             String[] arr = s.nextLine().split(",");
-            listOfDel.add(arr);
+            MatchDecoding md = new MatchDecoding(arr);
+            mapOfDeliveries.put(count++,md.getMap());
         }
     }
     public void printArrayList(){
 
-        for(String[] i:this.listOfDel)
+        for(Integer key :mapOfDeliveries.keySet())
         {
-            System.out.println(Arrays.toString(i));
-            System.out.println("=====================================");
+            System.out.print(key+" ");
+            System.out.println(mapOfDeliveries.get(key));
 
         }
     }
