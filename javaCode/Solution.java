@@ -20,13 +20,68 @@ public class Solution {
 //        deliveries.printArrayList();
 //        matches.printArrayList();
 ////        first
-//        NumberOfMatchedPlayedPerYear();
+        NumberOfMatchedPlayedPerYear(matches.getMapOfMatch());
 ////        second
-        numberOfMatchesWonOfTeamsInIPL(matches.getMapOfMatch());
+//        numberOfMatchesWonOfTeamsInIPL(matches.getMapOfMatch());
 ////        third
 //        extraRunIn2016(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 ////        fourth
 //        economicalBowler2015();
+
+    }
+
+    private static void NumberOfMatchedPlayedPerYear(HashMap<Integer, HashMap<String, String>> mapOfMatch) {
+       HashMap<Integer,Integer> yearOfMatches = new HashMap<>();
+        yearOfMatches.put(2008,0);
+        yearOfMatches.put(2009,0);
+        yearOfMatches.put(2010,0);
+        yearOfMatches.put(2011,0);
+        yearOfMatches.put(2012,0);
+        yearOfMatches.put(2013,0);
+        yearOfMatches.put(2014,0);
+        yearOfMatches.put(2015,0);
+        yearOfMatches.put(2016,0);
+        yearOfMatches.put(2017,0);
+
+        for(int i :mapOfMatch.keySet())
+        {
+            HashMap<String,String> n =mapOfMatch.get(i);
+
+            if(n.containsValue("2008")){
+                yearOfMatches.put(2008,yearOfMatches.getOrDefault(2008,0) + 1);
+            }
+            if(n.containsValue("2009")){
+                yearOfMatches.put(2009,yearOfMatches.getOrDefault(2009,0) + 1);
+            }
+            if(n.containsValue("2010")){
+                yearOfMatches.put(2010,yearOfMatches.getOrDefault(2010,0) + 1);
+            }
+            if(n.containsValue("2011")){
+                yearOfMatches.put(2011,yearOfMatches.getOrDefault(2011,0) + 1);
+            }
+            if(n.containsValue("2012")){
+                yearOfMatches.put(2012,yearOfMatches.getOrDefault(2012,0) + 1);
+            }
+            if(n.containsValue("2013")){
+                yearOfMatches.put(2013,yearOfMatches.getOrDefault(2013,0) + 1);
+            }
+            if(n.containsValue("2014")){
+                yearOfMatches.put(2014,yearOfMatches.getOrDefault(2014,0) + 1);
+            }
+            if(n.containsValue("2015")){
+                yearOfMatches.put(2015,yearOfMatches.getOrDefault(2015,0) + 1);
+            }
+            if(n.containsValue("2016")){
+                yearOfMatches.put(2016,yearOfMatches.getOrDefault(2016,0) + 1);
+            }
+            if(n.containsValue("2017")){
+                yearOfMatches.put(2017,yearOfMatches.getOrDefault(2017,0) + 1);
+            }
+        }
+        System.out.println(yearOfMatches.entrySet());
+//        for(char c:s.toCharArray()){
+//            yearOfMatches.put(c,yearOfMatches.getOrDefault(c,0) + 1);
+//        }
 
     }
 
