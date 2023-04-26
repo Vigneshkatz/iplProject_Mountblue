@@ -18,6 +18,7 @@ public class CSVReaderMatch {
         {
             System.out.println(e);
         }
+        
         update();
     }
 

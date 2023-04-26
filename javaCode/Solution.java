@@ -1,6 +1,5 @@
 package javaCode;
 
-import java.text.ParseException;
 import java.util.*;
 
 /*
@@ -12,8 +11,6 @@ import java.util.*;
     Create your own scenario.
 * */
 public class Solution {
-
-
     public static void main(String[] args)
     {
         CSVReaderDeliveries deliveries = new CSVReaderDeliveries();
@@ -25,10 +22,10 @@ public class Solution {
 ////        second
 //        numberOfMatchesWonOfTeamsInIPL(matches.getMapOfMatch());
 ////        third
-//        extraRunIn2016(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
+            extraRunIn2016(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 ////        fourth
 //        economicalBowler2015();
-        separateBYType(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
+//        separateBYType(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 
     }
 
@@ -91,7 +88,7 @@ public class Solution {
 
     private static void economicalBowler2015() {
     }
-
+//3.to calculate extra runs
     private static void extraRunIn2016(HashMap<Integer, HashMap<String, String>> mapOfDeliveries, HashMap<Integer, HashMap<String, String>> mapOfMatch) {
 //
 //        int extra=0;
@@ -109,24 +106,62 @@ public class Solution {
 //            String name = n.get("id");
 //            System.out.println(name);
 //            String
-            int extra = 0;
-            HashMap<String,Integer> map = new HashMap<>();
-            String year ="2016";
-            for(int j : mapOfDeliveries.keySet())
-            {
-                HashMap<String, String> delMap = mapOfDeliveries.get(j);
-//                System.out.println(delMap);
-//                extra+=intOf(delMap.get("penalty_runs"))+intOf(delMap.get("wide_runs"))+intOf(delMap.get("bye_runs"))+intOf(delMap.get("noball_run"));
-                extra+=intOf(delMap.get("extra_runs"));
-            }
-            System.out.println(extra);
+//            int extra = 0;
+//            HashMap<String,Integer> map = new HashMap<>();
+//            String year ="2016";
+//            for(int j : mapOfDeliveries.keySet())
+//            {
+//                HashMap<String, String> delMap = mapOfDeliveries.get(j);
+////                System.out.println(delMap);
+////                extra+=intOf(delMap.get("penalty_runs"))+intOf(delMap.get("wide_runs"))+intOf(delMap.get("bye_runs"))+intOf(delMap.get("noball_run"));
+//                extra+=intOf(delMap.get("extra_runs"));
+//            }
+//            System.out.println(extra);
 //        }
-
+        HashMap<String,Integer> map = new HashMap<>();
+        map.put("Chennai_Super_Kings",0);
+        map.put("Mumbai_Indians",0);
+        map.put("Royal_Challengers_Bangalore",0);
+        map.put("Delhi_Daredevils",0);
+        map.put("Sunrisers_Hyderabad",0);
+        map.put("Deccan_Chargers",0);
+        map.put("Gujarat_Lions",0);
+        map.put("Rising_Pune_Supergiant",0);
+        map.put("Kings_XI_Punjab",0);
+        map.put("Kolkata_Knight_Riders",0);
+        map.put("Rajasthan_Royals",0);
+        ArrayList<Integer> id = separateBYType(mapOfMatch);
+//        System.out.println(id.size());
+        ArrayList<HashMap<String, String>> res = getRes(id,mapOfDeliveries);
+        updateMap(map,res);
+//        System.out.println(map);
+        for(String team : map.keySet())
+        {
+            if(map.get(team) != 0) {
+                System.out.printf("%s has bowled %d Extra runs", team, map.get(team));
+                System.out.println();
+            }
+        }
     }
+
+    private static void updateMap(HashMap<String, Integer> map, ArrayList<HashMap<String, String>> res) {
+
+        String parameter = "bowling_team";
+//        int count = 0;
+        for(HashMap<String,String> individualRes : res)
+        {
+            String team = individualRes.get(parameter);
+//            System.out.println(individualRes);
+//            count++;
+            map.put(team,map.getOrDefault(team,0) + intOf(individualRes.get("extra_runs")));
+        }
+    }
+
     private static int intOf(String penaltyRuns) {
         if(penaltyRuns!=null &&penaltyRuns.matches("\\d+") )
         {
             int out = Integer.parseInt(penaltyRuns);
+//            System.out.println(out);
             return out;
         }
         else {
@@ -216,34 +251,46 @@ public class Solution {
         System.out.println("Kolkata_Knight_Riders : "+Kolkata_Knight_Riders);
         System.out.println("Rajasthan_Royals : "+Rajasthan_Royals);
     }
-    private static void separateBYType(
-            HashMap<Integer,HashMap<String, String>> deliveries,
-            HashMap<Integer,HashMap<String, String>> match){
-
-        HashMap<String,Integer> map = new HashMap<>();
-        map.put("Chennai_Super_Kings",0);
-        map.put("Mumbai_Indians",0);
-        map.put("Royal_Challengers_Bangalore",0);
-        map.put("Delhi_Daredevils",0);
-        map.put("Sunrisers_Hyderabad",0);
-        map.put("Deccan_Chargers",0);
-        map.put("Gujarat_Lions",0);
-        map.put("Rising_Pune_Supergiant",0);
-        map.put("Kings_XI_Punjab",0);
-        map.put("Kolkata_Knight_Riders",0);
-        map.put("Rajasthan_Royals",0);
+//    using separate method to easy purpose of separation
+    private static ArrayList<Integer> separateBYType(
+            HashMap<Integer,HashMap<String, String>> mapOfMatch){
         String parameter = "2016";
+
         ArrayList<Integer> id = new ArrayList<>();
-        for(Integer matchkey: match.keySet())
+
+        for(Integer matchKey: mapOfMatch.keySet())
         {
-            HashMap<String,String> singleMatch = match.get(matchkey);
+            HashMap<String,String> singleMatch = mapOfMatch.get(matchKey);
            if(singleMatch.get("date").contains(parameter)){
               id.add(Integer.parseInt(singleMatch.get("id")));
            }
         }
-        for(int i:id)
-        {
-            System.out.println(i);
+        return id;
+//        for(int i:id)
+//        {
+//            System.out.println(i);
+//        }
+    }
+
+    private static ArrayList<HashMap<String, String>> getRes(ArrayList<Integer> idList,
+                                                             HashMap<Integer,HashMap<String, String>> deliveries)
+    {
+        ArrayList<HashMap<String, String>> res = new ArrayList<>();
+        int count =0;
+        for(int id:idList) {
+            for (Integer i : deliveries.keySet()) {
+                if(count++==0)
+                {
+                    continue;
+                }
+                HashMap<String, String> eachDelivery = deliveries.get(i);
+                if(eachDelivery.get("matchId")!=null && eachDelivery.get("matchId").toString().matches("\\d+") && Integer.parseInt(eachDelivery.get("matchId"))==id )
+                {
+                    res.add(eachDelivery);
+                }
+
+            }
         }
+        return res;
     }
 }
