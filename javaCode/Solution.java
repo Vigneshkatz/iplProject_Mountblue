@@ -1,5 +1,6 @@
 package javaCode;
 
+import java.text.ParseException;
 import java.util.*;
 
 /*
@@ -20,18 +21,19 @@ public class Solution {
 //        deliveries.printArrayList();
 //        matches.printArrayList();
 ////        first
-        NumberOfMatchedPlayedPerYear(matches.getMapOfMatch());
+//        NumberOfMatchedPlayedPerYear(matches.getMapOfMatch());
 ////        second
 //        numberOfMatchesWonOfTeamsInIPL(matches.getMapOfMatch());
 ////        third
 //        extraRunIn2016(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 ////        fourth
 //        economicalBowler2015();
+        separateBYType(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 
     }
 
     private static void NumberOfMatchedPlayedPerYear(HashMap<Integer, HashMap<String, String>> mapOfMatch) {
-       HashMap<Integer,Integer> yearOfMatches = new HashMap<>();
+        HashMap<Integer,Integer> yearOfMatches = new HashMap<>();
         yearOfMatches.put(2008,0);
         yearOfMatches.put(2009,0);
         yearOfMatches.put(2010,0);
@@ -102,6 +104,34 @@ public class Solution {
 //                System.out.println(individualDelivery.get("extra_runs")+individualDelivery.get("legbye_runs"));
 //                System.out.println(count++);
 //        }
+//        for(int i :mapOfMatch.keySet()) {
+//            HashMap<String, String> n = mapOfMatch.get(i);
+//            String name = n.get("id");
+//            System.out.println(name);
+//            String
+            int extra = 0;
+            HashMap<String,Integer> map = new HashMap<>();
+            String year ="2016";
+            for(int j : mapOfDeliveries.keySet())
+            {
+                HashMap<String, String> delMap = mapOfDeliveries.get(j);
+//                System.out.println(delMap);
+//                extra+=intOf(delMap.get("penalty_runs"))+intOf(delMap.get("wide_runs"))+intOf(delMap.get("bye_runs"))+intOf(delMap.get("noball_run"));
+                extra+=intOf(delMap.get("extra_runs"));
+            }
+            System.out.println(extra);
+//        }
+
+    }
+    private static int intOf(String penaltyRuns) {
+        if(penaltyRuns!=null &&penaltyRuns.matches("\\d+") )
+        {
+            int out = Integer.parseInt(penaltyRuns);
+            return out;
+        }
+        else {
+            return 0;
+        }
     }
     private static void numberOfMatchesWonOfTeamsInIPL(HashMap<Integer, HashMap<String, String>> mapOfMatch) {
         /*
@@ -172,9 +202,7 @@ public class Solution {
                 case "Rajasthan Royals":
                     Rajasthan_Royals++;
                     break;
-
             }
-
         }
         System.out.println("Chennai_Super_Kings : "+ Chennai_Super_Kings);
         System.out.println("Mumbai_Indians : "+Mumbai_Indians);
@@ -187,5 +215,35 @@ public class Solution {
         System.out.println("Kings_XI_Punjab : "+ Kings_XI_Punjab);
         System.out.println("Kolkata_Knight_Riders : "+Kolkata_Knight_Riders);
         System.out.println("Rajasthan_Royals : "+Rajasthan_Royals);
+    }
+    private static void separateBYType(
+            HashMap<Integer,HashMap<String, String>> deliveries,
+            HashMap<Integer,HashMap<String, String>> match){
+
+        HashMap<String,Integer> map = new HashMap<>();
+        map.put("Chennai_Super_Kings",0);
+        map.put("Mumbai_Indians",0);
+        map.put("Royal_Challengers_Bangalore",0);
+        map.put("Delhi_Daredevils",0);
+        map.put("Sunrisers_Hyderabad",0);
+        map.put("Deccan_Chargers",0);
+        map.put("Gujarat_Lions",0);
+        map.put("Rising_Pune_Supergiant",0);
+        map.put("Kings_XI_Punjab",0);
+        map.put("Kolkata_Knight_Riders",0);
+        map.put("Rajasthan_Royals",0);
+        String parameter = "2016";
+        ArrayList<Integer> id = new ArrayList<>();
+        for(Integer matchkey: match.keySet())
+        {
+            HashMap<String,String> singleMatch = match.get(matchkey);
+           if(singleMatch.get("date").contains(parameter)){
+              id.add(Integer.parseInt(singleMatch.get("id")));
+           }
+        }
+        for(int i:id)
+        {
+            System.out.println(i);
+        }
     }
 }
