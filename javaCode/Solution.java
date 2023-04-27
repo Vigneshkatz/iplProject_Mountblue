@@ -18,11 +18,11 @@ public class Solution {
 //        deliveries.printArrayList();
 //        matches.printArrayList();
 ////        first
-//        NumberOfMatchedPlayedPerYear(matches.getMapOfMatch());
+        NumberOfMatchedPlayedPerYear(matches.getMapOfMatch());
 //        second
 //        numberOfMatchesWonOfTeamsInIPL(matches.getMapOfMatch());
 //        third
-            extraRunIn2016(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
+//            extraRunIn2016(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 ////        fourth
 //        economicalBowler2015(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 //        separateBYType(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
