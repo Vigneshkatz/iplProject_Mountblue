@@ -19,28 +19,22 @@ public class Solution {
 //        matches.printArrayList();
 ////        first
 //        NumberOfMatchedPlayedPerYear(matches.getMapOfMatch());
-////        second
+//        second
 //        numberOfMatchesWonOfTeamsInIPL(matches.getMapOfMatch());
-////        third
+//        third
             extraRunIn2016(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 ////        fourth
-//        economicalBowler2015();
+//        economicalBowler2015(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 //        separateBYType(deliveries.getMapOfDeliveries(),matches.getMapOfMatch());
 
     }
 
     private static void NumberOfMatchedPlayedPerYear(HashMap<Integer, HashMap<String, String>> mapOfMatch) {
         HashMap<Integer,Integer> yearOfMatches = new HashMap<>();
-        yearOfMatches.put(2008,0);
-        yearOfMatches.put(2009,0);
-        yearOfMatches.put(2010,0);
-        yearOfMatches.put(2011,0);
-        yearOfMatches.put(2012,0);
-        yearOfMatches.put(2013,0);
-        yearOfMatches.put(2014,0);
-        yearOfMatches.put(2015,0);
-        yearOfMatches.put(2016,0);
-        yearOfMatches.put(2017,0);
+        for(int i = 2008;i<=2017;i++)
+        {
+            yearOfMatches.put(i,0);
+        }
 
         for(int i :mapOfMatch.keySet())
         {
@@ -77,7 +71,7 @@ public class Solution {
                 yearOfMatches.put(2017,yearOfMatches.getOrDefault(2017,0) + 1);
             }
         }
-        System.out.println(yearOfMatches.keySet());
+//        System.out.println(yearOfMatches.keySet());
         for(int year: yearOfMatches.keySet())
         {
             System.out.printf("In %d : %d Matches Had played",year,yearOfMatches.get(year));
@@ -86,38 +80,53 @@ public class Solution {
 
     }
 
-    private static void economicalBowler2015() {
-    }
-//3.to calculate extra runs
-    private static void extraRunIn2016(HashMap<Integer, HashMap<String, String>> mapOfDeliveries, HashMap<Integer, HashMap<String, String>> mapOfMatch) {
-//
-//        int extra=0;
-//        int year = 2015;
-//        int count =0;
-//
-//        for(Integer key :mapOfDeliveries.keySet())
+    private static void economicalBowler2015(HashMap<Integer, HashMap<String, String>> mapOfDeliveries,
+                                             HashMap<Integer, HashMap<String, String>> mapOfMatch)  {
+//total balls bowled
+//        HashMap<String,Integer> ballBowled = new HashMap<>();
+        //        total balls total runs
+        HashMap<String,Integer> runsLeaked = new HashMap<>();
+        HashMap<String,Double> map = new HashMap<>();
+        ArrayList<Integer> idList = getIds(mapOfMatch,"2015");
+//        System.out.println(idList.size());
+        ArrayList<HashMap<String, String>> res = getRes(idList,mapOfDeliveries);
+//        for(HashMap<String, String> i : res)
 //        {
-//                HashMap<String ,String> individualDelivery = mapOfDeliveries.get(key);
-//                System.out.println(individualDelivery.get("extra_runs")+individualDelivery.get("legbye_runs"));
-//                System.out.println(count++);
+//            System.out.println(i);
 //        }
-//        for(int i :mapOfMatch.keySet()) {
-//            HashMap<String, String> n = mapOfMatch.get(i);
-//            String name = n.get("id");
-//            System.out.println(name);
-//            String
-//            int extra = 0;
-//            HashMap<String,Integer> map = new HashMap<>();
-//            String year ="2016";
-//            for(int j : mapOfDeliveries.keySet())
-//            {
-//                HashMap<String, String> delMap = mapOfDeliveries.get(j);
-////                System.out.println(delMap);
-////                extra+=intOf(delMap.get("penalty_runs"))+intOf(delMap.get("wide_runs"))+intOf(delMap.get("bye_runs"))+intOf(delMap.get("noball_run"));
-//                extra+=intOf(delMap.get("extra_runs"));
-//            }
-//            System.out.println(extra);
+//        updateMap(ballBowled,res,"bowler","ball");
+        HashMap<String,Integer> ballBowled =updateMapWithKeys(new HashMap<String,Integer>(),res,"bowler");
+//        updateMap(runsLeaked,res,"bowler","total_runs");
+//        System.out.println("No of balls");
+//        System.out.println(ballBowled);
+//        System.out.println("No of runs");
+        addNumberOfBalls(ballBowled,res);
+
+//        System.out.println(ballBowled);
+
+//        for(String name : ballBowled.keySet())
+//        {
+//            int ballsBowled = ballBowled.get(name) / 6;
+//            System.out.println(ballsBowled);
+//            int totalRuns = runsLeaked.get(name);
+//            System.out.println(totalRuns);
+//            double economy = totalRuns / ballsBowled;
+//            map.put(name,economy);
+//
 //        }
+//        System.out.println(map);55
+    }
+
+    private static void addNumberOfBalls(HashMap<String, Integer> ballBowled, ArrayList<HashMap<String, String>> res) {
+
+        for(HashMap<String, String> i:res)
+        {
+            System.out.println(i);
+        }
+    }
+
+    //3.to calculate extra runs
+    private static void extraRunIn2016(HashMap<Integer, HashMap<String, String>> mapOfDeliveries, HashMap<Integer, HashMap<String, String>> mapOfMatch) {
         HashMap<String,Integer> map = new HashMap<>();
         map.put("Chennai_Super_Kings",0);
         map.put("Mumbai_Indians",0);
@@ -130,11 +139,12 @@ public class Solution {
         map.put("Kings_XI_Punjab",0);
         map.put("Kolkata_Knight_Riders",0);
         map.put("Rajasthan_Royals",0);
-        ArrayList<Integer> id = separateBYType(mapOfMatch);
-//        System.out.println(id.size());
+        ArrayList<Integer> id = getIds(mapOfMatch,"2016");
+//
         ArrayList<HashMap<String, String>> res = getRes(id,mapOfDeliveries);
-        updateMap(map,res);
-//        System.out.println(map);
+        System.out.println(res.size());
+        updateMap(map,res,"bowling_team","extra_runs");
+//
         for(String team : map.keySet())
         {
             if(map.get(team) != 0) {
@@ -144,17 +154,32 @@ public class Solution {
         }
     }
 
-    private static void updateMap(HashMap<String, Integer> map, ArrayList<HashMap<String, String>> res) {
+    private static void updateMap(HashMap<String, Integer> map, ArrayList<HashMap<String, String>> res,String setParameter,String getParameter) {
 
-        String parameter = "bowling_team";
-//        int count = 0;
+//        String parameter = "bowling_team";
+
         for(HashMap<String,String> individualRes : res)
         {
-            String team = individualRes.get(parameter);
-//            System.out.println(individualRes);
-//            count++;
-            map.put(team,map.getOrDefault(team,0) + intOf(individualRes.get("extra_runs")));
+            String team = individualRes.get(setParameter);
+
+            map.put(team,map.getOrDefault(team,0) + intOf(individualRes.get(getParameter)));
         }
+    }
+    private static HashMap<String, Integer> updateMapWithKeys(HashMap<String, Integer> map,ArrayList<HashMap<String, String>> res,String setParameter){
+
+            for(HashMap<String,String> individualRes : res)
+            {
+                String key = individualRes.get(setParameter);
+                if(map.containsKey(key))
+                {
+                    continue;
+                }else{
+                    map.put(key,0);
+                }
+
+            }
+            return map;
+
     }
 
     private static int intOf(String penaltyRuns) {
@@ -252,24 +277,21 @@ public class Solution {
         System.out.println("Rajasthan_Royals : "+Rajasthan_Royals);
     }
 //    using separate method to easy purpose of separation
-    private static ArrayList<Integer> separateBYType(
-            HashMap<Integer,HashMap<String, String>> mapOfMatch){
-        String parameter = "2016";
+    private static ArrayList<Integer> getIds(
+            HashMap<Integer,HashMap<String, String>> mapOfMatch,String parameter){
 
+        String toAddInList ="id";
         ArrayList<Integer> id = new ArrayList<>();
 
         for(Integer matchKey: mapOfMatch.keySet())
         {
             HashMap<String,String> singleMatch = mapOfMatch.get(matchKey);
            if(singleMatch.get("date").contains(parameter)){
-              id.add(Integer.parseInt(singleMatch.get("id")));
+              id.add(Integer.parseInt(singleMatch.get(toAddInList)));
            }
         }
         return id;
-//        for(int i:id)
-//        {
-//            System.out.println(i);
-//        }
+
     }
 
     private static ArrayList<HashMap<String, String>> getRes(ArrayList<Integer> idList,
@@ -291,6 +313,7 @@ public class Solution {
 
             }
         }
+        System.out.println(res.size());
         return res;
     }
 }

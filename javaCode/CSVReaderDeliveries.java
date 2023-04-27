@@ -18,7 +18,7 @@ public class CSVReaderDeliveries {
     }
 
     public HashMap<Integer, HashMap<String, String>> getMapOfDeliveries() {
-        return mapOfDeliveries;
+        return this.mapOfDeliveries;
     }
 
     //    to update the map
