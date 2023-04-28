@@ -6,6 +6,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+        long stopWatch = System.nanoTime();
         HashMap<Integer,HashMap<String,String>> matches = getMatches();
         HashMap<Integer,HashMap<String,String>> deliveries = getDeliveries();
 
@@ -16,17 +17,20 @@ public class Main {
         getTheTopEconomicalBowlersOf2015(matches,deliveries);
 
         getWicketsPerTeam(deliveries);
+
+//        long duration = (System.nanoTime()-stopWatch)/1000000;
+        System.out.println((System.nanoTime()-stopWatch)/1000000);
     }
     public static HashMap<Integer, HashMap<String, String>> getDeliveries() {
         HashMap<Integer, HashMap<String, String>> deliveries = new HashMap<>();
-        String path = "/home/katziio/Desktop/IPlProjectRefactored/IplProject/resources/deliveries.csv";
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        String path = "/home/katziio/Desktop/IplProject/resources/deliveries.csv";
+        try (BufferedReader fileReaderForDeliveries = new BufferedReader(new FileReader(path))) {
             String line;
-            int count = 1;
-            while ((line = br.readLine()) != null) {
+            int IDS = 1;
+            while ((line = fileReaderForDeliveries.readLine()) != null) {
                 String[] arr = line.split(",");
                 Delivery md = new Delivery(arr);
-                deliveries.put(count++, md.getMap());
+                deliveries.put(IDS++, md.getMap());
             }
         }
 
@@ -45,14 +49,14 @@ public class Main {
     }
     public static HashMap<Integer, HashMap<String, String>> getMatches() {
         HashMap<Integer,HashMap<String,String>> mapOfMatch = new HashMap<>();
-        String path ="/home/katziio/Desktop/IPlProjectRefactored/IplProject/resources/matches.csv" ;
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        String path ="/home/katziio/Desktop/IplProject/resources/matches.csv" ;
+        try (BufferedReader fileReaderOfMatches = new BufferedReader(new FileReader(path))) {
             String line;
-            int count = 1;
-            while ((line = br.readLine()) != null) {
+            int IDS = 1;
+            while ((line = fileReaderOfMatches.readLine()) != null) {
                 String[] arr = line.split(",");
                 Match md = new Match(arr);
-                mapOfMatch.put(count++, md.getMap());
+                mapOfMatch.put(IDS++, md.getMap());
             }
         } catch (FileNotFoundException e) {
             System.out.println(e);
@@ -67,88 +71,99 @@ public class Main {
     }
     public static void findMatchesPerYear(HashMap<Integer, HashMap<String, String>> matches)
     {
-        HashMap<Integer,Integer> yearAndWins= new HashMap<>();
+        Map<Integer,Integer> yearAndWins= new TreeMap<>();
         loadMapWithYearAndValue(yearAndWins);
-        for(int key :matches.keySet())
+        for(int KEY :matches.keySet())
         {
-            HashMap<String,String> n =matches.get(key);
+            HashMap<String,String> match =matches.get(KEY);
             for(int YEAR = 2008; YEAR <= 2017 ; YEAR++)
             {
-                if(n.containsValue(new String(String.valueOf(YEAR)))){
+                if(match.containsValue(new String(String.valueOf(YEAR)))){
                     yearAndWins.put(YEAR,yearAndWins.getOrDefault(YEAR,0) + 1);
                 }
             }
         }
-        printSolution(yearAndWins);
+        System.out.println(yearAndWins);
     }
+
     public static void getTheTopEconomicalBowlersOf2015(HashMap<Integer, HashMap<String, String>> getMapOfMatch,HashMap<Integer,
             HashMap<String, String>> getMapOfDeliveries)
     {
-        HashMap<String, Integer> noOfDeliveriesBowledBybowlers = new HashMap<>();
+        HashMap<String, Integer> noOfDeliveriesBowledByBowlers = new HashMap<>();
         HashMap<String, Double> bowlersAndEconomy = new HashMap<>();
-        HashMap<String, Integer> runsConcededBybowlers = new HashMap<>();
+        HashMap<String, Integer> runsConcededBowler = new HashMap<>();
+        
         ArrayList<Integer> listOfIds = getIdsForGivenParameter(getMapOfMatch, "2015");
         ArrayList<HashMap<String, String>> listOfDeliveriesForGivenIds = getResultForGivenIds(listOfIds, getMapOfDeliveries);
-        getBowlersName(noOfDeliveriesBowledBybowlers, listOfDeliveriesForGivenIds);
-        getDeliveriesForGivenIds(noOfDeliveriesBowledBybowlers, listOfDeliveriesForGivenIds);
-        getBowlersName(runsConcededBybowlers, listOfDeliveriesForGivenIds);
-        getRunConcededByBowler(runsConcededBybowlers, listOfDeliveriesForGivenIds);
-        getEconomyOfBowler(bowlersAndEconomy, runsConcededBybowlers, noOfDeliveriesBowledBybowlers);
-        getSortedForTopBowlersPerformance(bowlersAndEconomy);
+        
+        getBowlersName(noOfDeliveriesBowledByBowlers, listOfDeliveriesForGivenIds);
+        getDeliveriesForGivenIds(noOfDeliveriesBowledByBowlers, listOfDeliveriesForGivenIds);
+        getBowlersName(runsConcededBowler, listOfDeliveriesForGivenIds);
+        getRunConcededByBowler(runsConcededBowler, listOfDeliveriesForGivenIds);
+        getEconomyOfBowler(bowlersAndEconomy, runsConcededBowler, noOfDeliveriesBowledByBowlers);
+
+        sortAndPrintSolution(bowlersAndEconomy);
     }
     public static void extraRunsConcededPerTeamIn2016(HashMap<Integer, HashMap<String, String>> matches, HashMap<Integer, HashMap<String, String>> deliveries) {
-        HashMap<String,Integer> map = new HashMap<>();
+        HashMap<String,Integer> teamsAndExtras = new HashMap<>();
+        
         ArrayList<Integer> listOfIds = getIdsForGivenParameter(matches,"2016");
         ArrayList<HashMap<String, String>> listOfDeliveriesForGivenIds= getResultForGivenIds(listOfIds, deliveries);
-        updateMap(map,listOfDeliveriesForGivenIds,"bowling_team","extra_runs");
-        printSolution(map);
+        
+        updateMapWithIds(teamsAndExtras,listOfDeliveriesForGivenIds,"bowling_team","extra_runs");
+        
+        printSolution(teamsAndExtras);
     }
     public static void findEveryTeamsTotalWins(HashMap<Integer,
             HashMap<String, String>> matches) {
         HashMap<String, Integer> everyTeamsTotalWins = new HashMap<>();
+        
         loadMapWithTeamAndValue(everyTeamsTotalWins);
-        for (int i : matches.keySet()) {
-            HashMap<String, String> n = matches.get(i);
-            String name = n.get("winner");
+        for (int KEY : matches.keySet()) {
+            HashMap<String, String> match = matches.get(KEY);
+            String name = match.get("winner");
 
-            if(name!=null && !name.contains("winner") && n.get("result").contains("normal"))
+            if(name!=null && !name.contains("winner") && match.get("result").contains("normal"))
                 everyTeamsTotalWins.put(name, everyTeamsTotalWins.getOrDefault(name, 0) + 1);
         }
+        
         printSolution(everyTeamsTotalWins);
 
     }
     public static void getWicketsPerTeam(HashMap<Integer,
             HashMap<String, String>> matches) {
-        HashMap<String,Integer> map = new HashMap<>();
-        loadMapWithTeamAndValue(map);
+        HashMap<String,Integer> getWicketsPerTeam = new HashMap<>();
+        
+        loadMapWithTeamAndValue(getWicketsPerTeam);
 
-        for(Integer i :matches.keySet() ) {
-            HashMap<String, String> match = matches.get(i);
+        for(Integer key :matches.keySet() ) {
+            HashMap<String, String> match = matches.get(key);
             String name = match.get("bowling_team");
             if (match.get("dismissal_kind") != null) {
-                map.put(name, map.getOrDefault(name, 0) + 1);
+                getWicketsPerTeam.put(name, getWicketsPerTeam.getOrDefault(name, 0) + 1);
             }
         }
-        printSolution(map);
+        
+        printSolution(getWicketsPerTeam);
     }
 
     public static void loadMapWithTeamAndValue(HashMap<String,
-            Integer> map) {
-        for(int TEAMS = 0,VALUE=0;TEAMS<11;TEAMS++) {
-            map.put("Chennai Super Kings", VALUE);
-            map.put("Mumbai Indians", VALUE);
-            map.put("Royal Challenger Bangalore", VALUE);
-            map.put("Delhi Daredevils", VALUE);
-            map.put("Sunrisers Hyderabad", VALUE);
-            map.put("Deccan Chargers", VALUE);
-            map.put("Gujarat Lions", VALUE);
-            map.put("Rising Pune Supergiant", VALUE);
-            map.put("Kings XI Punjab", VALUE);
-            map.put("Kolkata Knight_Riders", VALUE);
-            map.put("Rajasthan Royals", VALUE);
+            Integer> mapWithOutValue) {
+        for(int VALUE=0;VALUE<1;VALUE++) {
+            mapWithOutValue.put("Chennai Super Kings", VALUE);
+            mapWithOutValue.put("Mumbai Indians", VALUE);
+            mapWithOutValue.put("Royal Challenger Bangalore", VALUE);
+            mapWithOutValue.put("Delhi Daredevils", VALUE);
+            mapWithOutValue.put("Sunrisers Hyderabad", VALUE);
+            mapWithOutValue.put("Deccan Chargers", VALUE);
+            mapWithOutValue.put("Gujarat Lions", VALUE);
+            mapWithOutValue.put("Rising Pune Supergiant", VALUE);
+            mapWithOutValue.put("Kings XI Punjab", VALUE);
+            mapWithOutValue.put("Kolkata Knight_Riders", VALUE);
+            mapWithOutValue.put("Rajasthan Royals", VALUE);
         }
     }
-    public static void loadMapWithYearAndValue(HashMap<Integer,
+    public static void loadMapWithYearAndValue(Map<Integer,
             Integer> yearAndWins){
         for(int YEAR = 2008;YEAR<=2017;YEAR++)
         {
@@ -190,16 +205,16 @@ public class Main {
             HashMap<Integer, HashMap<String, String>> mapOfMatch, String parameter){
 
         String toAddInList ="id";
-        ArrayList<Integer> id = new ArrayList<>();
+        ArrayList<Integer> ID = new ArrayList<>();
 
         for(Integer matchKey: mapOfMatch.keySet())
         {
             HashMap<String,String> singleMatch = mapOfMatch.get(matchKey);
             if(singleMatch.get("date").contains(parameter)){
-                id.add(Integer.parseInt(singleMatch.get(toAddInList)));
+                ID.add(Integer.parseInt(singleMatch.get(toAddInList)));
             }
         }
-        return id;
+        return ID;
     }
     public static void getBowlersName(HashMap<String, Integer> bowlers,
                                          ArrayList<HashMap<String, String>> res) {
@@ -211,10 +226,8 @@ public class Main {
                 bowlers.put(key,0);
         }
     }
-    public static void updateMap(HashMap<String, Integer> map,
+    public static void updateMapWithIds(HashMap<String, Integer> map,
                                  ArrayList<HashMap<String, String>> res,String setParameter,String getParameter) {
-
-
         for(HashMap<String,String> individualRes : res)
         {
             String team = individualRes.get(setParameter);
@@ -224,16 +237,16 @@ public class Main {
     }
 
     public static  ArrayList<HashMap<String, String>> getResultForGivenIds(ArrayList<Integer> idList,
-                                                              HashMap<Integer, HashMap<String, String>> mapOfDeliveries) {
+                                                              HashMap<Integer, HashMap<String, String>> deliveries) {
         ArrayList<HashMap<String, String>> res = new ArrayList<>();
-        int count =0;
+        int COUNT =0;
         for(int id:idList) {
-            for (Integer i : mapOfDeliveries.keySet()) {
-                if(count++==0)
+            for (Integer i : deliveries.keySet()) {
+                if(COUNT++==0)
                 {
                     continue;
                 }
-                HashMap<String, String> eachDelivery = mapOfDeliveries.get(i);
+                HashMap<String, String> eachDelivery = deliveries.get(i);
                 if(eachDelivery.get("matchId")!=null && eachDelivery.get("matchId").toString().matches("\\d+") && Integer.parseInt(eachDelivery.get("matchId"))==id )
                 {
                     res.add(eachDelivery);
@@ -242,35 +255,39 @@ public class Main {
         }
         return res;
     }
-    public static Integer parseIntFromString(String totalRuns) {
-        if(totalRuns!=null && totalRuns.matches("\\d+") )
+    public static Integer parseIntFromString(String runsInString) {
+        if(runsInString!=null && runsInString.matches("\\d+") )
         {
-           return Integer.parseInt(totalRuns);
+           return Integer.parseInt(runsInString);
         }
         else {
             return 0;
         }
     }
-    public static void getSortedForTopBowlersPerformance(HashMap<String, Double> map){
-        List<Map.Entry<String, Double>> list = new ArrayList<>(map.entrySet());
-        Collections.sort
-                (list, new Comparator<Map.Entry<String, Double>>()
-                {
-                public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+    public static <K, V extends Comparable<? super V>> void sortAndPrintSolution(HashMap<K, V> mapToBeSorted){
+
+
+
+        List<Map.Entry<K, V>> list = new ArrayList<>(mapToBeSorted.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
                 return o1.getValue().compareTo(o2.getValue());
             }
         });
-        LinkedHashMap<String, Double> sortedMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Double> entry : list) {
+
+        LinkedHashMap<K, V> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<K, V> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
 
-        for (Map.Entry<String, Double> entry : sortedMap.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+        for (Map.Entry<K, V> entry : sortedMap.entrySet()) {
+            System.out.printf(entry.getKey() + ": " + "%.2f%n",entry.getValue());
         }
         System.out.println();
+
     }
-    public static <K, V> void printSolution(HashMap<K,V> yearAndWins)
+    public static <K, V> void printSolution(Map<K,V> yearAndWins)
     {
         for(K key: yearAndWins.keySet())
         {
@@ -280,7 +297,6 @@ public class Main {
                 System.out.printf("%s : %s",key.toString(),yearAndWins.get(key).toString());
                 System.out.println();
             }
-
         }
         System.out.println();
     }
