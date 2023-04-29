@@ -12,9 +12,9 @@ public class Main {
 
         findMatchesPerYear(matches);
         findEveryTeamsTotalWins(matches);
-
-        extraRunsConcededPerTeamIn2016(matches,deliveries);
-        getTheTopEconomicalBowlersOf2015(matches,deliveries);
+//
+       extraRunsConcededPerTeamIn2016(matches,deliveries);
+       getTheTopEconomicalBowlersOf2015(matches,deliveries);
 
         getWicketsPerTeam(deliveries);
 
